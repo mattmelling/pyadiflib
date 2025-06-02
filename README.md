@@ -8,10 +8,10 @@ adif = AdifParser(f).parse()
 print(adif)
 >>> AdifFile(
     preamble='ADIF Export',
-    version='3.1.1', 
-    created=datetime.datetime(2025, 6, 1, 15, 12, 50), 
-    program_id='WSJT-X', 
-    program_version='2.6.1', 
+    version='3.1.1',
+    created=datetime.datetime(2025, 6, 1, 15, 12, 50),
+    program_id='WSJT-X',
+    program_version='2.6.1',
     qsos=[
         {
             'call': 'IZ8DBJ',
