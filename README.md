@@ -49,3 +49,32 @@ print(buf.getvalue())
 ```
 
 Populate the AdifFile struct and add QSOs to the list of dicts, then write them out. No special value handling apart from datetimes which are automatically formatted as strings.
+
+## Worked example
+This is what I needed the library for in the first place. I have a WSJTX log containing a bunch of FT8 QSOs made on QO-100 and want to correct the TX/RX frequencies, set bands, and sat name.
+
+This program reads the original log, updates the entries, and writes it back out to another log that I then import into Cloudlog.
+
+```
+from pyadiflib import AdifParser, AdifWriter
+
+infile = open('wsjtx_log.adi')
+adif = AdifParser(infile).parse()
+infile.close()
+
+for qso in adif.qsos:
+    qso['band_rx'] = '3cm'
+    qso['band'] = '13cm'
+    qso['sat_name'] = 'QO-100'
+
+    freq = float(qso.get('freq', 0))
+    if freq > 0:
+        freq_tx = freq - 10489.500 + 2400
+        qso['freq'] = freq_tx
+        qso['freq_rx'] = freq
+
+outfile = open('output.adi', 'w')
+writer = AdifWriter(outfile)
+writer.write(adif)
+outfile.close()
+```
