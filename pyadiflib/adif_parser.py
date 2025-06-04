@@ -21,6 +21,8 @@ class AdifParser:
         str = ''
         s = self._file.read(1)
         while s != ch:
+            if s == '':
+                break
             str += s
             s = self._file.read(1)
         return str
@@ -30,7 +32,7 @@ class AdifParser:
         adif_tag = self.read_until('>')
 
         if ':' not in adif_tag:
-            return (adif_tag, None)
+            return (adif_tag.lower(), None)
 
         tag, sz = adif_tag.split(':')
         val = self._file.read(int(sz)).strip()

@@ -64,3 +64,20 @@ ADIF Export
     assert adif.qsos[0].get('gridsquare') != 'OJ00'
     assert adif.qsos[0].get('mode') is None
     assert adif.qsos[0].get('rst_sent') == '-02'
+
+def test_parse_random_n1mm():
+    f = io.StringIO("""
+ADIF Export from N1MMLogger.net - Version 1.0.10386.0
+Built: 13/08/2024 11:44:30
+G4IYT logs generated @ 2025-06-04 22:20:22Z
+Contest Name: DX - 1900-01-01
+<EOH>
+ <CALL:5>DF2CA <QSO_DATE:8>20250604 <TIME_ON:6>172043 <TIME_OFF:6>172043 <BAND:3>3CM <STATION_CALLSIGN:5>G4IYT <FREQ:11>10489.73000 <COMMENT:16>Pluto+ 90cm dish <CONTEST_ID:2>DX <FREQ_RX:11>10489.73000 <MODE:3>SSB <NAME:7>Patrick <RST_RCVD:2>57 <RST_SENT:2>55 <OPERATOR:5>G4IYT <GRIDSQUARE:6>JN57vv <CQZ:2>14 <STX:1>1 <APP_N1MM_POINTS:1>1 <APP_N1MM_RADIO_NR:1>1 <APP_N1MM_CONTINENT:2>EU <APP_N1MM_RUN1RUN2:1>1 <APP_N1MM_RADIOINTERFACED:1>1 <APP_N1MM_ISORIGINAL:4>True <APP_N1MM_NETBIOSNAME:15>DESKTOP-G9H3B9D <APP_N1MM_ISRUNQSO:1>0 <PFX:3>DF2 <APP_N1MM_MULT1:1>1 <APP_N1MM_MULT2:1>0 <APP_N1MM_MULT3:1>0 <APP_N1MM_ID:32>c13e93a790dd41f6b1fcc85cc6d2c641 <APP_N1MM_CLAIMEDQSO:1>1 <EOR>
+    """)
+
+    p = AdifParser(f)
+    adif = p.parse()
+
+    assert len(adif.qsos) == 1
+    assert adif.qsos[0].get('call') == 'DF2CA'
+    assert adif.qsos[0].get('rst_rcvd') == '57'
